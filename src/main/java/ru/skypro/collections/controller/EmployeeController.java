@@ -8,6 +8,7 @@ import ru.skypro.collections.model.Employee;
 import ru.skypro.collections.service.EmployeeService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("employess")
@@ -34,7 +35,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAll() {
+    public Map<String, Employee> getAll() {
         return employeeService.getAll();
     }
 }
