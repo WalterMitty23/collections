@@ -5,14 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.collections.model.Employee;
-import ru.skypro.collections.service.EmployeeService;
+import ru.skypro.collections.service.implementation.EmployeeService;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
+
 
 @RestController
-@RequestMapping("employess")
-
+@RequestMapping("/employee")
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -21,21 +20,25 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee add(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return employeeService.add(firstName, lastName);
+    public void add(@RequestParam String firstName,
+                    @RequestParam String lastName,
+                    @RequestParam int salary,
+                    @RequestParam int department) {
+        employeeService.add(firstName, lastName, salary, department);
     }
+
     @GetMapping("/remove")
-    public Employee remove(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return employeeService.remove(firstName, lastName);
+    public void remove(@RequestParam String firstName, @RequestParam String lastName) {
+        employeeService.remove(firstName, lastName);
     }
 
     @GetMapping("/find")
-    public Employee find(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName) {
-        return employeeService.find(firstName, lastName);
+    public void find(@RequestParam String firstName, @RequestParam String lastName) {
+        employeeService.find(firstName, lastName);
     }
 
-    @GetMapping
-    public Map<String, Employee> getAll() {
+    @GetMapping("/all")
+    public Collection<Employee> getAll() {
         return employeeService.getAll();
     }
 }
