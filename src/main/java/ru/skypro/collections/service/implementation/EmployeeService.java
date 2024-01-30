@@ -15,16 +15,17 @@ public class EmployeeService {
 
     private static final int MAX_COUNT = 10;
     private final Map<String, Employee> employees = new HashMap<>(MAX_COUNT);
-    public void add(String firstName, String lastName, int salary, int department) throws EmployeeAlreadyAddedException {
+    public Employee add(String firstName, String lastName, int salary, int department) throws EmployeeAlreadyAddedException {
         if (employees.size() >= MAX_COUNT) {
-            throw new EmployeeStorageIsFullException("Employee storage is full ");
+            throw new EmployeeStorageIsFullException("Employee storage is full");
         }
-        Employee employee = new Employee(firstName, lastName, salary, department);
-                var key = makeKey(firstName, lastName);
+        var key = makeKey(firstName, lastName);
         if (employees.containsKey(key)) {
             throw new EmployeeAlreadyAddedException("Employee has already added");
         }
+        Employee employee = new Employee(firstName, lastName, salary, department);
         employees.put(key, employee);
+        return employee;
     }
 
     public void remove(String firstName, String lastName) {
@@ -35,15 +36,14 @@ public class EmployeeService {
         }
     }
 
-    public void find(String firstName, String lastName) {
+    public Employee find(String firstName, String lastName) {
 
         var key = makeKey(firstName, lastName);
         var employee = employees.get(key);
-        if (employee != null) {
-            return;
+        if (employee == null) {
+            throw new EmployeeNotFoundException("Сотрудник " + firstName + " " + lastName + " не найден");
         }
-        throw new EmployeeNotFoundException("Сотрудник " + firstName + lastName + " не найден");
-
+        return employee;
     }
 
     private static String makeKey(String firstName, String lastName) {

@@ -21,16 +21,16 @@ public class DepartmentController {
     }
 
     @GetMapping("/max-salary")
-    public Employee max(@RequestParam int department) {
+    public Employee findMaxSalary(@RequestParam int department) {
         return service.findMaxSalary(department);
     }
 
     @GetMapping("/min-salary")
-    public Employee min(@RequestParam int department) {
+    public Employee findMinSalary(@RequestParam int department) {
         return service.findMinSalary(department);
     }
 
-    @GetMapping("/all-department")
+    @GetMapping(path="/all", params = {"department"})
     public Collection<Employee> findAllByDepartment(@RequestParam int department) {
         return service.findByDepartment(department);
     }

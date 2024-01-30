@@ -1,6 +1,7 @@
 package ru.skypro.collections.service;
 
 import org.springframework.stereotype.Service;
+import ru.skypro.collections.exception.EmployeeNotFoundException;
 import ru.skypro.collections.model.Employee;
 import ru.skypro.collections.service.implementation.EmployeeService;
 
@@ -19,14 +20,14 @@ public class DepartmentService {
         return employeeService.getAll().stream()
                 .filter(e -> e.getDepartment() == department)
                 .max(Comparator.comparingInt(Employee::getSalary))
-                .orElse(null);
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee is not found"));
     }
 
     public Employee findMinSalary(int department) {
         return employeeService.getAll().stream()
                 .filter(e -> e.getDepartment() == department)
-                .max(Comparator.comparingInt(Employee::getSalary))
-                .orElse(null);
+                .min(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee is not found"));
     }
 
     public Collection<Employee> findByDepartment(int department) {

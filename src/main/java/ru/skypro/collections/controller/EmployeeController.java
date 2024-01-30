@@ -20,11 +20,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public void add(@RequestParam String firstName,
+    public Employee add(@RequestParam String firstName,
                     @RequestParam String lastName,
                     @RequestParam int salary,
                     @RequestParam int department) {
-        employeeService.add(firstName, lastName, salary, department);
+       employeeService.add(firstName, lastName, salary, department);
+        return employeeService.add(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
@@ -33,8 +34,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/find")
-    public void find(@RequestParam String firstName, @RequestParam String lastName) {
-        employeeService.find(firstName, lastName);
+    public Employee find(@RequestParam String firstName, @RequestParam String lastName) {
+        return employeeService.find(firstName, lastName);
     }
 
     @GetMapping("/all")
