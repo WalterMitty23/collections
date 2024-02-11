@@ -1,9 +1,11 @@
 package ru.skypro.collections.service.implementation;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import ru.skypro.collections.exception.EmployeeAlreadyAddedException;
 import ru.skypro.collections.exception.EmployeeNotFoundException;
 import ru.skypro.collections.exception.EmployeeStorageIsFullException;
+import ru.skypro.collections.exception.WrongNameException;
 import ru.skypro.collections.model.Employee;
 
 import java.util.Collection;
@@ -16,15 +18,24 @@ public class EmployeeService {
     private static final int MAX_COUNT = 10;
     private final Map<String, Employee> employees = new HashMap<>(MAX_COUNT);
     public Employee add(String firstName, String lastName, int salary, int department) throws EmployeeAlreadyAddedException {
+        if (!StringUtils.isAlpha(firstName) || !StringUtils.isAlpha(lastName)) {
+            throw new WrongNameException("Last name must contain only letters");
+        }
+
         if (employees.size() >= MAX_COUNT) {
             throw new EmployeeStorageIsFullException("Employee storage is full");
         }
+        Employee employee = new Employee(
+                StringUtils.capitalize(firstName),
+                StringUtils.capitalize(lastName),
+                salary,
+                department);
         var key = makeKey(firstName, lastName);
         if (employees.containsKey(key)) {
-            throw new EmployeeAlreadyAddedException("Employee has already added");
+            throw new EmployeeAlreadyAddedException("Employee has already been added");
         }
-        Employee employee = new Employee(firstName, lastName, salary, department);
         employees.put(key, employee);
+
         return employee;
     }
 
